@@ -19,7 +19,7 @@ The DSL-first approach is not a very easy-to-maintain approach. It requires some
 
 ## Another note
 
-This app is not exactly feature complete. When the secret is compromised (and it can tell that it is), it will try its best to defend, but it does not notify you. You definitely want to change this and send an email to yourself, or automatically regenerate the secret.
+This app is not exactly feature complete. When the secret is compromised and the server can figure out that it is, it will try its best to defend, but it does not notify you. You definitely want to change this and send an email to yourself, or automatically regenerate the secret.
 
 ## DB
 
