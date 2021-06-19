@@ -1,8 +1,7 @@
 import { AuthenticationError } from 'apollo-server';
 import { Context } from '../../types';
 import jwt from 'jsonwebtoken';
-import { AuthenticationFailureError, InvalidTokenError } from './errors.js';
-import { verify } from 'argon2';
+import { InvalidTokenError } from './errors.js';
 
 export const me = async (_parent: any, _args: any, { prisma, req }: Context) => {
     if (req.headers.authorization != null) {
@@ -39,32 +38,5 @@ export const me = async (_parent: any, _args: any, { prisma, req }: Context) => 
     } else {
         // We could error out, but prefer not to, since people could be unauthenticated when calling this, and we don't want to scream at them for that.
         return null;
-    }
-};
-
-export const login = async (
-    _parent: any,
-    { username, password }: { username: string; password: string },
-    { prisma }: Context
-) => {
-    const user = await prisma.user.findUnique({ where: { username } });
-    if (!user) {
-        // Security measure.
-        throw new AuthenticationFailureError('Bad creds');
-    }
-    if (await verify(user.password, password)) {
-        return {
-            user,
-            token: jwt.sign(
-                {
-                    username: user.username,
-                    id: user.id,
-                },
-                Buffer.from(process.env.SECRET, 'base64'),
-                { expiresIn: '1h' }
-            ),
-        };
-    } else {
-        throw new AuthenticationFailureError('Bad creds');
     }
 };

@@ -2,6 +2,8 @@ import { hash } from 'argon2';
 import { Context } from '../../types';
 import jwt from 'jsonwebtoken';
 import prismaRuntime from '@prisma/client/runtime/index.js';
+import { verify } from 'argon2';
+import { AuthenticationFailureError } from './errors.js';
 
 export const register = async (
     _parent: any,
@@ -42,4 +44,31 @@ export const register = async (
         user,
         token,
     };
+};
+
+export const login = async (
+    _parent: any,
+    { username, password }: { username: string; password: string },
+    { prisma }: Context
+) => {
+    const user = await prisma.user.findUnique({ where: { username } });
+    if (!user) {
+        // Security measure.
+        throw new AuthenticationFailureError('Bad creds');
+    }
+    if (await verify(user.password, password)) {
+        return {
+            user,
+            token: jwt.sign(
+                {
+                    username: user.username,
+                    id: user.id,
+                },
+                Buffer.from(process.env.SECRET, 'base64'),
+                { expiresIn: '1h' }
+            ),
+        };
+    } else {
+        throw new AuthenticationFailureError('Bad creds');
+    }
 };
