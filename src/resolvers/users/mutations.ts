@@ -4,12 +4,18 @@ import jwt from 'jsonwebtoken';
 import prismaRuntime from '@prisma/client/runtime/index.js';
 import { verify } from 'argon2';
 import { AuthenticationFailureError } from './errors.js';
+import { UserInputError } from 'apollo-server';
 
 export const register = async (
     _parent: any,
     { username, password }: { username: string; password: string },
     { prisma }: Context
 ) => {
+    if (password.length < 8) {
+        throw new UserInputError('Password not >= 8 characters.');
+    } else if (username.trim().length < 4) {
+        throw new UserInputError('Username not >= 4 characters.');
+    }
     const hashedPassword = await hash(password);
     let user;
     try {
