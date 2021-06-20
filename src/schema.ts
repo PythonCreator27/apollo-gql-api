@@ -29,7 +29,7 @@ export const typeDefs = gql`
         addTodo(text: String!): Todo! @complexity(value: 5)
         updateTodo(id: Int!, text: String, done: Boolean): Todo! @complexity(value: 10)
         deleteTodo(id: Int!): Todo! @complexity(value: 5)
-        login(username: String!, password: String!): UserResponse @complexity(value: 10)
+        login(username: String!, password: String!): UserResponse! @complexity(value: 10)
         register(username: String!, password: String!): UserResponse!
             @complexity(value: 10)
     }
