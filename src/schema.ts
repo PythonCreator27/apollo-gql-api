@@ -12,6 +12,7 @@ export const typeDefs = gql`
     type User {
         id: Int!
         username: String!
+        email: String!
     }
 
     type UserResponse {
@@ -29,8 +30,9 @@ export const typeDefs = gql`
         addTodo(text: String!): Todo! @complexity(value: 5)
         updateTodo(id: Int!, text: String, done: Boolean): Todo! @complexity(value: 10)
         deleteTodo(id: Int!): Todo! @complexity(value: 5)
-        login(username: String!, password: String!): UserResponse! @complexity(value: 10)
-        register(username: String!, password: String!): UserResponse!
+        login(usernameOrEmail: String!, password: String!): UserResponse!
+            @complexity(value: 10)
+        register(username: String!, email: String!, password: String!): UserResponse!
             @complexity(value: 10)
     }
 `;

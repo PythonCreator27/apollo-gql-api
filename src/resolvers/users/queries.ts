@@ -12,15 +12,16 @@ export const me = async (_parent: any, _args: any, { prisma, req }: Context) => 
                 info = jwt.verify(token, Buffer.from(process.env.SECRET, 'base64')) as {
                     id: number;
                     username: string;
+                    email: string;
                 };
             } catch (err) {
                 throw new InvalidTokenError('Token invalid or expired');
             }
             // findUnique does not allow you to query by multiple fields, but we want to.
-            // In most cases, if someone gets the key, all is over, but the statement below (`{ where: { id: info.id, username: info.username } }`)
+            // In most cases, if someone gets the key, all is over, but the statement below (`{ where: { id: info.id, username: info.username, email: info.email } }`)
             // prevents hackers from using a random username when creating a forged JWT. This provides a thin layer of extra security.
             const user = await prisma.user.findFirst({
-                where: { id: info.id, username: info.username },
+                where: { id: info.id, username: info.username, email: info.email },
             });
 
             // NOTE: This can only happen when some bad actor tries to hack our server. You probably want some reporting logic here.

@@ -8,19 +8,21 @@ import { UserInputError } from 'apollo-server';
 
 export const register = async (
     _parent: any,
-    { username, password }: { username: string; password: string },
+    { username, password, email }: { email: string; username: string; password: string },
     { prisma }: Context
 ) => {
     if (password.length < 8) {
         throw new UserInputError('Password not >= 8 characters.');
     } else if (username.trim().length < 4) {
         throw new UserInputError('Username not >= 4 characters.');
+    } else if (!email.match(/^[^\s@]+@[^\s@]+$/)) {
+        throw new UserInputError('Invalid email address.');
     }
     const hashedPassword = await hash(password);
     let user;
     try {
         user = await prisma.user.create({
-            data: { password: hashedPassword, username },
+            data: { password: hashedPassword, username, email },
         });
     } catch (error) {
         if (
@@ -39,7 +41,11 @@ export const register = async (
     }
 
     const token = jwt.sign(
-        { id: user.id, username: user.username },
+        {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+        },
         Buffer.from(process.env.SECRET, 'base64'),
         {
             expiresIn: '1h',
@@ -54,10 +60,14 @@ export const register = async (
 
 export const login = async (
     _parent: any,
-    { username, password }: { username: string; password: string },
+    { usernameOrEmail, password }: { usernameOrEmail: string; password: string },
     { prisma }: Context
 ) => {
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await prisma.user.findUnique({
+        where: usernameOrEmail.includes('@')
+            ? { email: usernameOrEmail }
+            : { username: usernameOrEmail },
+    });
     if (!user) {
         // Security measure.
         throw new AuthenticationFailureError('Bad creds');
@@ -69,6 +79,7 @@ export const login = async (
                 {
                     username: user.username,
                     id: user.id,
+                    email: user.email,
                 },
                 Buffer.from(process.env.SECRET, 'base64'),
                 { expiresIn: '1h' }
