@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { AuthenticationFailureError, InvalidTokenError } from '../users/errors.js';
+import { AuthenticationFailureError, InvalidTokenError } from '../users.js';
 import jwt from 'jsonwebtoken';
 import { PrismaClient, User } from '@prisma/client';
 

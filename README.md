@@ -1,6 +1,6 @@
 # Apollo Server 3.0 + GraphQL + Prisma + TypeScript
 
-This is a graphql project using `apollo-server@3`, `typescript`, `graphql`, `prisma`, `argon2`, `graphql-query-complexity`, and `jsonwebtoken`.
+This is a node.js graphql project using `apollo-server@3`, `typescript`, `prisma`, `argon2`, `class-validator`, `type-graphql` and `jsonwebtoken`.
 
 ## Features
 
@@ -12,10 +12,6 @@ This is a graphql project using `apollo-server@3`, `typescript`, `graphql`, `pri
 -   Update todo
 -   Delete a todo
 -   _SECURITY!!!_ (and auth!)
-
-## A note about maintainability
-
-The DSL-first approach is not a very easy-to-maintain approach. It requires some very odd workarounds to get middleware, guards, etc. to work. You will have to edit the schema a bunch. Some things are just not ergonomical. You are going to have to just get used to it, since it is what it is. You could attempt to use decorators and create an easy way of doing things, but if you do, you are better off using typegraphql.
 
 ## Another note
 

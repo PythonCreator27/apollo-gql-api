@@ -320,6 +320,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/glob@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@types/glob@npm:7.1.3"
+  dependencies:
+    "@types/minimatch": "*"
+    "@types/node": "*"
+  checksum: 633bf1dda9a30899b233ed6b97c75cdd59f2ee856a12240c85474ce6889e26b3b3520b62de56f6bb61824af0ef51b311a0cae305f27ba0de8ddc4898a3673d42
+  languageName: node
+  linkType: hard
+
 "@types/jsonwebtoken@npm:^8.5.1":
   version: 8.5.1
   resolution: "@types/jsonwebtoken@npm:8.5.1"
@@ -349,6 +359,13 @@ __metadata:
   version: 1.3.2
   resolution: "@types/mime@npm:1.3.2"
   checksum: c354bc135628c2f4ab64801ca3867c3acbd4050611579c4c9f5bdfecfb70db71bb8540bf8611b4319f5ef44139c5f7c5af81254369add5ed59e7e02ce929b96f
+  languageName: node
+  linkType: hard
+
+"@types/minimatch@npm:*":
+  version: 3.0.4
+  resolution: "@types/minimatch@npm:3.0.4"
+  checksum: abbe7031d8a6144c36f1803c5c1914885c2349d5d73fc45aae44807c12c4c803b8acfb134c71c7eff75c462c218697f982b96633f8fdf71b83ec50eba36122a6
   languageName: node
   linkType: hard
 
@@ -396,6 +413,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7.3.3":
+  version: 7.3.6
+  resolution: "@types/semver@npm:7.3.6"
+  checksum: 36776caed9a5d80cc7e0dd32fc08ac762918273bef849c369a300895646f9126e9857c9235e130493cf1fb2ee77e44cd1b599eded4fcbd11803962936771506a
+  languageName: node
+  linkType: hard
+
 "@types/serve-static@npm:*":
   version: 1.13.9
   resolution: "@types/serve-static@npm:1.13.9"
@@ -403,6 +427,13 @@ __metadata:
     "@types/mime": ^1
     "@types/node": "*"
   checksum: f261127514057b5c038d76259128d7b765dd92bfeaf769d05b8ddf5f254d066ce6142a935e2fc707bb3009d6544a979591852f0d135d0ed4d0c56db08738df6b
+  languageName: node
+  linkType: hard
+
+"@types/validator@npm:^13.1.3":
+  version: 13.1.4
+  resolution: "@types/validator@npm:13.1.4"
+  checksum: 9e60c044017531dbf89d6f84bab2016aaa479aae2cad1dea0c3dc86ec10cc54ecc1bd4e6f1f908547ada885d366b29227dc72fd86356e5d2e2976b716eb640e4
   languageName: node
   linkType: hard
 
@@ -529,6 +560,7 @@ __metadata:
     "@types/node": ^14.17.0
     apollo-server: 3.0.0-preview.2
     argon2: ^0.28.2
+    class-validator: ^0.13.1
     dotenv-safe: ^8.2.0
     express: ^4.17.1
     graphql: ^15.5.0
@@ -536,6 +568,8 @@ __metadata:
     jsonwebtoken: ^8.5.1
     nodemon: ^2.0.7
     prisma: ~2.25.0
+    reflect-metadata: ^0.1.13
+    type-graphql: ^1.1.1
     typescript: ^4.3.2
   languageName: unknown
   linkType: soft
@@ -914,6 +948,17 @@ __metadata:
   version: 2.0.0
   resolution: "ci-info@npm:2.0.0"
   checksum: 553fe83c085fce5e19e20f85b993f24a463e6f805803837a8868607bb68b1300567868694a5dff1beca6c54926a4c0be1cc9ef0c35f810653d590bf64183f6a0
+  languageName: node
+  linkType: hard
+
+"class-validator@npm:^0.13.1":
+  version: 0.13.1
+  resolution: "class-validator@npm:0.13.1"
+  dependencies:
+    "@types/validator": ^13.1.3
+    libphonenumber-js: ^1.9.7
+    validator: ^13.5.2
+  checksum: 09a7d83213ac40b2c57502790701277b323f0977d0e1d5597c1a5a0990a8c9ee04ab75b8e2395a39063c0ee9dd196e1cb900a420ff5808b8a1923de2b8c705fe
   languageName: node
   linkType: hard
 
@@ -1502,7 +1547,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.3, glob@npm:^7.1.4":
+"glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6":
   version: 7.1.7
   resolution: "glob@npm:7.1.7"
   dependencies:
@@ -1551,6 +1596,17 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"graphql-query-complexity@npm:^0.7.0":
+  version: 0.7.2
+  resolution: "graphql-query-complexity@npm:0.7.2"
+  dependencies:
+    lodash.get: ^4.4.2
+  peerDependencies:
+    graphql: ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: dfde1b07aefbc8747d1f6556ad9ff4c9dbd636b10c798c5bb82fbdc80ea1f89674960ed955724b80e8b92f521242375812324dbaf6379db996b2c3dfce285ddf
+  languageName: node
+  linkType: hard
+
 "graphql-query-complexity@npm:^0.8.1":
   version: 0.8.1
   resolution: "graphql-query-complexity@npm:0.8.1"
@@ -1559,6 +1615,17 @@ fsevents@~2.3.1:
   peerDependencies:
     graphql: ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 7b76e3c8a54b3e1e71b34f66eca287951bdd04d9385085cd982e1a48636e8c98ca92d8f857b5a8de0dff519097d443de21f7fece4d368ea09a88e6d2c0d9dd40
+  languageName: node
+  linkType: hard
+
+"graphql-subscriptions@npm:^1.1.0":
+  version: 1.2.1
+  resolution: "graphql-subscriptions@npm:1.2.1"
+  dependencies:
+    iterall: ^1.3.0
+  peerDependencies:
+    graphql: ^0.10.5 || ^0.11.3 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: 9de788213f885de8c2b9cf45f9620d6bcbd7606796f96a1ff7761f0a5c60485e9abb534b8e3080564bc0e923ca24ed6677a24bab04581e646027248b3ebd4cfd
   languageName: node
   linkType: hard
 
@@ -2001,6 +2068,13 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"iterall@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "iterall@npm:1.3.0"
+  checksum: 25ae2d07cf97fc35d43fa7af814839689416b83d3ade0fec97a62c58b7b9fad5ff89dd0ede99f2d67cae2697ffa6987f0ab10876f40ae6466e802609a05b1006
+  languageName: node
+  linkType: hard
+
 "json-buffer@npm:3.0.0":
   version: 3.0.0
   resolution: "json-buffer@npm:3.0.0"
@@ -2062,6 +2136,13 @@ fsevents@~2.3.1:
   dependencies:
     package-json: ^6.3.0
   checksum: 63c1f224358d094a75782cc48a5b3eeaf70a70c0e18f8b814480e50ed0ecedb4bc5f2c9cc44c7983fbf31e865f0376526bf9a563c304f3261971f38d8f51c5c6
+  languageName: node
+  linkType: hard
+
+"libphonenumber-js@npm:^1.9.7":
+  version: 1.9.20
+  resolution: "libphonenumber-js@npm:1.9.20"
+  checksum: 203a540688bba731aff612c579ddd3ecc1503cb5932db7389a87d654e5b1b4fc351911c1bb58e0e8e9c633edbcbe49d42ea548849dc8e19a444c0b964e0aa20b
   languageName: node
   linkType: hard
 
@@ -2790,6 +2871,13 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 629101e6c8b7e0d3166fa51953f908f45b5c73dbaf1375c4f8c3ed62221b870c951343b9b031d0c49957e7262a88020f41be25731ee85b5d779f12c7cec66005
+  languageName: node
+  linkType: hard
+
 "registry-auth-token@npm:^4.0.0":
   version: 4.2.1
   resolution: "registry-auth-token@npm:4.2.1"
@@ -2883,7 +2971,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.4, semver@npm:^7.3.5":
+"semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
@@ -3215,7 +3303,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0":
+"tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0":
   version: 2.3.0
   resolution: "tslib@npm:2.3.0"
   checksum: 7b4fc9feff0f704743c3760f5d8d708f6417fac6458159e63df3a6b1100f0736e3b99edb9fe370f274ad15160a1f49ff05cb49402534c818ff552c48e38c3e6e
@@ -3240,6 +3328,25 @@ fsevents@~2.3.1:
   version: 0.8.1
   resolution: "type-fest@npm:0.8.1"
   checksum: f8c4b4249f52e8bea7a4fc55b3653c96c2d547240e4c772e001d02b7cc38b8c3eb493ab9fbe985a76a203cd1aa7044776b728a71ba12bf36e7131f989597885b
+  languageName: node
+  linkType: hard
+
+"type-graphql@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "type-graphql@npm:1.1.1"
+  dependencies:
+    "@types/glob": ^7.1.3
+    "@types/node": "*"
+    "@types/semver": ^7.3.3
+    glob: ^7.1.6
+    graphql-query-complexity: ^0.7.0
+    graphql-subscriptions: ^1.1.0
+    semver: ^7.3.2
+    tslib: ^2.0.1
+  peerDependencies:
+    class-validator: ">=0.12.0"
+    graphql: ^15.3.0
+  checksum: 03da2350d6bc9a5e0dbfe7e838bac3e3ab1ebd3b6a48c406389bad3ac4e80c9115752ad3fd93f864c5e4d0fd611cec60dada0b8e5798d2135ec8f2cc41e98313
   languageName: node
   linkType: hard
 
@@ -3400,6 +3507,13 @@ typescript@^4.3.2:
   bin:
     uuid: dist/bin/uuid
   checksum: aed2bcef341f95635f308fea8831fb9038b18c485fe7e71feb89d2e05602dfecad0cb6f2246fae096d4da425cca6e8a71056f28abd97ad98cf770a2018853248
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.5.2":
+  version: 13.6.0
+  resolution: "validator@npm:13.6.0"
+  checksum: 6ae43bfd47ae7e3ed5803c6fff949c5cbabb4d248af38fce0ccafb637c85db8c0c5cee2a91817242865de4f5970d61de809f0975910ec78282307ffd23249466
   languageName: node
   linkType: hard
 

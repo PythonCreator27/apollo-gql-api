@@ -1,9 +1,11 @@
 import 'dotenv-safe/config.js';
+import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import typeDefs from './schema.js';
-import { resolvers } from './resolvers/index.js';
 import prismaClient from '@prisma/client';
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './resolvers/users.js';
+import { TodoResolver } from './resolvers/todos.js';
 // import gqlQueryComplexity, {
 //     directiveEstimator,
 //     simpleEstimator,
@@ -20,8 +22,7 @@ const PORT = process.env.PORT || 4000;
 const prisma = new prismaClient.PrismaClient();
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema: await buildSchema({ resolvers: [UserResolver, TodoResolver] }),
     context: async ({ req, res }) => {
         return { req, res, prisma };
     },
