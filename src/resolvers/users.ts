@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError, ApolloError } from 'apollo-server-express';
 import { hash, verify } from 'argon2';
 import jwt from 'jsonwebtoken';
 import {
@@ -14,7 +14,6 @@ import {
 } from 'type-graphql';
 import { Context } from '../types';
 import prismaRuntime from '@prisma/client/runtime/index.js';
-import { ApolloError } from 'apollo-server';
 import { isEmail, IsEmail, MaxLength, MinLength } from 'class-validator';
 
 @ObjectType()

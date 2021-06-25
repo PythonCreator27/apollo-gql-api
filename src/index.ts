@@ -1,11 +1,12 @@
 import 'dotenv-safe/config.js';
 import 'reflect-metadata';
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import prismaClient from '@prisma/client';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/users.js';
 import { TodoResolver } from './resolvers/todos.js';
+import express from 'express';
 // import gqlQueryComplexity, {
 //     directiveEstimator,
 //     simpleEstimator,
@@ -16,6 +17,8 @@ import { TodoResolver } from './resolvers/todos.js';
 // const queryComplexity = (
 //     gqlQueryComplexity as unknown as { default: gqlQueryComplexityFn }
 // ).default;
+
+const app = express();
 
 const PORT = process.env.PORT || 4000;
 
@@ -35,8 +38,10 @@ const server = new ApolloServer({
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 
-const { url } = await server.listen(PORT);
+await server.start();
 
-if (process.env.NODE_ENV !== 'production') {
-    console.log(`🚀 Server ready at ${url}`);
-}
+server.applyMiddleware({ app });
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server ready http://localhost:${PORT}`);
+});

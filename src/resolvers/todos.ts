@@ -1,4 +1,3 @@
-import { UserInputError } from 'apollo-server';
 import {
     Args,
     Ctx,
@@ -13,7 +12,7 @@ import {
 } from 'type-graphql';
 import { Context } from '../types';
 import auth from './utils/auth.js';
-import { ApolloError } from 'apollo-server';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 @ObjectType()
 export class Todo {
