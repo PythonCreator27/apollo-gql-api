@@ -1,6 +1,6 @@
 # Apollo Server 3.0 + GraphQL + Prisma + TypeScript
 
-This is a node.js graphql project using `apollo-server@3`, `typescript`, `prisma`, `argon2`, `class-validator`, `type-graphql` and `jsonwebtoken`.
+This is a node.js graphql project using Apollo Server 3, TypeScript, Prisma 2, argon2, class-validator, TypeGraphQL, and jsonwebtoken.
 
 ## Features
 
