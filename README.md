@@ -1,6 +1,6 @@
 # Apollo Server 3.0 + GraphQL + Prisma + TypeScript
 
-This is a node.js graphql project using Apollo Server 3, TypeScript, Prisma 2, argon2, class-validator, TypeGraphQL, and jsonwebtoken.
+This is a node.js graphql project using Apollo Server 3, TypeScript, Prisma 2, argon2, class-validator, TypeGraphQL, express-session, and ioredis.
 
 ## Features
 
@@ -13,7 +13,7 @@ This is a node.js graphql project using Apollo Server 3, TypeScript, Prisma 2, a
 -   Delete a todo
 -   _SECURITY!!!_ (and auth!)
 
-## Another note
+## A note
 
 This app is not exactly feature complete. When the secret is compromised and the server can figure out that it is, it will try its best to defend, but it does not notify you. You definitely want to change this and send an email to yourself, or automatically regenerate the secret.
 
@@ -21,13 +21,17 @@ This app is not exactly feature complete. When the secret is compromised and the
 
 This project uses PostgreSQL, though it could be very easily switched to use SQLite, MongoDB, or MySQL. You will have to edit the `providers` field of the datasource in the prisma schema, and then recreate the migrations.
 
+## Redis Sessions
+
+This project uses sessions (`express-session`), and uses Redis to store the sessions. To configure the redis instance URL, set the `REDIS_URL` env var in `.env`.
+
 ## Inspecting data
 
 You can run `yarn prisma studio` to inspect the data in the database.
 
 ## Env vars
 
-Rename `.env.example` to `.env`. Get you db connection URL, paste it in. To get the SECRET var, follow the instructions below.
+Rename `.env.example` to `.env`. Get you db connection URL, paste it in. To get the SECRET var, follow the instructions below. Paste your redis instance url in as well.
 
 ### Generating SECRET env var
 

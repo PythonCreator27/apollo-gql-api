@@ -1,6 +1,5 @@
-import { AuthenticationError, ApolloError } from 'apollo-server-express';
+import { ApolloError } from 'apollo-server-express';
 import { hash, verify } from 'argon2';
-import jwt from 'jsonwebtoken';
 import {
     Args,
     Ctx,
@@ -13,7 +12,6 @@ import {
     ArgsType,
 } from 'type-graphql';
 import { Context } from '../types';
-import prismaRuntime from '@prisma/client/runtime/index.js';
 import { isEmail, IsEmail, MaxLength, MinLength } from 'class-validator';
 
 @ObjectType()
@@ -46,9 +44,6 @@ export class AuthenticationFailureError extends ApolloError {
 class UserResponse {
     @Field(() => User)
     user: User;
-
-    @Field()
-    token: string;
 }
 
 @ArgsType()
@@ -82,7 +77,7 @@ export class UserResolver {
     async login(
         @Args()
         { usernameOrEmail, password }: LoginArgs,
-        @Ctx() { prisma }: Context
+        @Ctx() { prisma, req }: Context
     ) {
         const user = await prisma.user.findUnique({
             where: isEmail(usernameOrEmail)
@@ -94,18 +89,8 @@ export class UserResolver {
             throw new AuthenticationFailureError('Bad creds');
         }
         if (await verify(user.password, password)) {
-            return {
-                user,
-                token: jwt.sign(
-                    {
-                        username: user.username,
-                        id: user.id,
-                        email: user.email,
-                    },
-                    Buffer.from(process.env.SECRET, 'base64'),
-                    { expiresIn: '1h' }
-                ),
-            };
+            req.session.userId = user.id;
+            return { user };
         } else {
             throw new AuthenticationFailureError('Bad creds');
         }
@@ -114,7 +99,7 @@ export class UserResolver {
     @Mutation(() => UserResponse)
     async register(
         @Args() { email, password, username }: RegisterArgs,
-        @Ctx() { prisma }: Context
+        @Ctx() { prisma, req }: Context
     ) {
         const hashedPassword = await hash(password);
         let user;
@@ -122,80 +107,34 @@ export class UserResolver {
             user = await prisma.user.create({
                 data: { password: hashedPassword, username, email },
             });
-        } catch (error) {
-            if (
-                error instanceof prismaRuntime.PrismaClientKnownRequestError &&
-                error.code === 'P2002'
-            ) {
-                // Kept in case custom logic or logging required.
-                throw new Error(
-                    'The database failed to insert the user for unknown reasons, maybe try a different username'
-                );
-            } else {
-                throw new Error(
-                    'The database failed to insert the user for unknown reasons, maybe try a different username'
-                );
-            }
+        } catch {
+            throw new Error(
+                'The database failed to insert the user for unknown reasons, maybe try again later or change your username or email address.'
+            );
         }
 
-        const token = jwt.sign(
-            {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-            },
-            Buffer.from(process.env.SECRET, 'base64'),
-            {
-                expiresIn: '1h',
-            }
-        );
+        req.session.userId = user.id;
 
-        return {
-            user,
-            token,
-        };
+        return { user };
     }
 
     @Query(() => User, { nullable: true })
-    async me(@Ctx() { req, prisma }: Context) {
-        if (req.headers.authorization != null) {
-            const token = req.headers.authorization.split('Bearer ')[1];
-            if (token != null) {
-                let info;
-                try {
-                    info = jwt.verify(
-                        token,
-                        Buffer.from(process.env.SECRET, 'base64')
-                    ) as {
-                        id: number;
-                        username: string;
-                        email: string;
-                    };
-                } catch (err) {
-                    throw new InvalidTokenError('Token invalid or expired');
-                }
-                // findUnique does not allow you to query by multiple fields, but we want to.
-                // In most cases, if someone gets the key, all is over, but the statement below (`{ where: { id: info.id, username: info.username, email: info.email } }`)
-                // prevents hackers from using a random username when creating a forged JWT. This provides a thin layer of extra security.
-                const user = await prisma.user.findFirst({
-                    where: { id: info.id, username: info.username, email: info.email },
-                });
+    me(@Ctx() { req, prisma }: Context) {
+        if (!req.session.userId) return null;
+        return prisma.user.findUnique({
+            where: {
+                id: req.session.userId,
+            },
+        });
+    }
 
-                // NOTE: This can only happen when some bad actor tries to hack our server. You probably want some reporting logic here.
-                if (!user) {
-                    // Technically, this is a UserNotFoundError, but for security purposes, this is considered this same as an invalid token.
-                    // If someone stole our secret, they could create tokens on their machine and use it to figure out what users exist using this message.
-                    // Therefore, the message that the user is not found is hidden. Combined with the above security measure, this provides a little
-                    // extra assurance that attackers will not be able to attack user accounts so easily.
-                    throw new InvalidTokenError('Token invalid or expired');
-                }
-                return user;
-            } else {
-                throw new AuthenticationError('Auth header in invalid format');
-            }
-        } else {
-            // We could error out, but prefer not to, since people could be unauthenticated when calling this, and we don't want to scream at them for that.
-            return null;
-        }
+    @Mutation(() => Boolean)
+    logout(@Ctx() { req, res }: Context) {
+        return new Promise(resolve => {
+            req.session.destroy(err => {
+                res.clearCookie('qid');
+                err ? resolve(false) : resolve(true);
+            });
+        });
     }
 }

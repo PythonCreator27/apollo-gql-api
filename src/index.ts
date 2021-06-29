@@ -7,6 +7,9 @@ import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/users.js';
 import { TodoResolver } from './resolvers/todos.js';
 import express from 'express';
+import Redis from 'ioredis';
+import connectRedis from 'connect-redis';
+import session from 'express-session';
 // import gqlQueryComplexity, {
 //     directiveEstimator,
 //     simpleEstimator,
@@ -21,6 +24,28 @@ import express from 'express';
 const app = express();
 
 const PORT = process.env.PORT || 4000;
+
+const RedisStore = connectRedis(session);
+const redis = new Redis(process.env.REDIS_URL);
+app.set('trust proxy', 1);
+app.use(
+    session({
+        name: 'qid',
+        store: new RedisStore({
+            client: redis,
+            disableTouch: true,
+        }),
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 365 * 7, // 7 years
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+        },
+        saveUninitialized: false,
+        secret: process.env.SECRET,
+        resave: true,
+    })
+);
 
 const prisma = new prismaClient.PrismaClient();
 
